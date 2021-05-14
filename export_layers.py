@@ -164,7 +164,8 @@ class LayerExport(inkex.Effect):
             '--export-area-drawing' if self.options.fit_contents else
             '--export-area-page',
             '--export-dpi', str(self.options.dpi),
-            '--export-png', output_file.encode('utf-8'),
+            '--export-type', 'png',
+            '--export-filename', output_file.encode('utf-8'),
             svg_file.encode('utf-8')
         ]
         p = subprocess.Popen(command,
@@ -186,10 +187,10 @@ class LayerExport(inkex.Effect):
         output_file = os.path.join(output_dir, file_name + '.svg')
         command = [
             'inkscape',
-            '--export-area-drawing' if self.options.fit_contents else
-            '--export-area-page',
+            '--export-area-drawing' if self.options.fit_contents else '--export-area-page',
             '--export-dpi', str(self.options.dpi),
-            '--export-plain-svg', output_file.encode('utf-8'),
+            '--export-type', "svg",
+            '--export-filename', output_file.encode('utf-8'),
             '--vacuum-defs',
             svg_file.encode('utf-8')
         ]
@@ -197,7 +198,7 @@ class LayerExport(inkex.Effect):
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
         if p.wait() != 0:
-            raise Exception('Failed to convert %s to PNG' % svg_file)
+            raise Exception('Failed to convert %s to SVG' % svg_file)
 
         return output_file
 
